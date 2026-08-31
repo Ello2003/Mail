@@ -1,0 +1,6 @@
+{
+  "name": "Apple Mail Search & Invoice Dashboard",
+  "description": "Unified search across multiple Apple Mail accounts to extract, categorize, and export invoices, purchases, receipts, and attachments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

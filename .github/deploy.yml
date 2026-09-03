@@ -1,0 +1,41 @@
+name: Deploy Application
+
+# Trigger the workflow on push to the main branch
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the repository code
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Step 2: Set up the environment (e.g., Node.js)
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    # Step 3: Install dependencies and build
+    - name: Install dependencies and build
+      run: |
+        npm ci
+        npm run build --if-present
+
+    # Step 4: Deploy to server via SSH
+    - name: Deploy via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /path/to/your/app
+          git pull origin main
+          npm install --production
+          pm2 restart all
